@@ -1,14 +1,13 @@
 import os
 
 import pyttsx3
+from flask_ml.flask_ml_server.models import FileInput
 from pydub import AudioSegment
-from flask_ml.flask_ml_server.models import (
-    FileInput,
-)
 
 
 class Text2AudioModel:
 
+    # Convert text files into audio files and save in Output folder
     def convert_text_to_audio(self, file_path):
 
         # Initialize the text-to-speech engine
@@ -20,29 +19,29 @@ class Text2AudioModel:
         engine.setProperty("voice", voices[0].id)
         engine.setProperty("rate", 130)
 
-        # parse file
+        # parse the given file and separate each line of conversation
         conversations = []
         persons = {}
         unique_persons = 0
-        with open(file_path, 'r') as file:
+        with open(file_path, "r", encoding="utf-8") as file:
             lines = file.readlines()
 
         for line in lines:
             # Split each line by the colon to separate the name and the conversation
-            if ':' in line:
-                individual, convo = line.split(':', 1)
+            if ":" in line:
+                individual, convo = line.split(":", 1)
                 conversations.append((convo, individual))
                 if individual not in persons:
                     persons[individual] = unique_persons
                     unique_persons += 1
-        temp_wav_file = "temp_audio.wav"
 
-        # Convert the first sentence to audio and save as WAV
-        engine.save_to_file('', temp_wav_file)
+        # Create an empty wav file
+        temp_wav_file = "temp_audio.wav"
+        engine.save_to_file("", temp_wav_file)
         engine.runAndWait()
         combined_sound = AudioSegment.from_wav(temp_wav_file)
 
-        # Iterate through the remaining texts, append each one to the combined sound
+        # Iterate through all texts, create audio with unique voice and append each one to the combined sound
         for i in range(0, len(conversations)):
             text = conversations[i][0]
             index = (persons[conversations[i][1]]) % num_voices
@@ -52,10 +51,12 @@ class Text2AudioModel:
             new_sound = AudioSegment.from_wav(temp_wav_file)
             combined_sound += new_sound
 
-        # Create Output Directory if not exists and output_file_path
-        os.makedirs("Outputs", exist_ok=True)
+        # Create Output Directory if not exists and output file path
+        os.makedirs("../Outputs", exist_ok=True)
         print(str(os.path.splitext(os.path.basename(file_path))[0]))
-        output_file_path = "Outputs/" + str(os.path.splitext(os.path.basename(file_path))[0]) + ".mp3"
+        output_file_path = (
+                "Outputs/" + str(os.path.splitext(os.path.basename(file_path))[0]) + ".mp3"
+        )
 
         # Export the combined sound to MP3
         combined_sound.export(output_file_path, format="mp3")
@@ -63,10 +64,11 @@ class Text2AudioModel:
 
         return output_file_path
 
+    # Get list of files and returns list of audio files
     def convert(self, data: list[FileInput]):
         results = []
         for dp in data:
             result = self.convert_text_to_audio(dp.file_path)
-            temp = {'file_path': dp.file_path, 'result': result}
+            temp = {"file_path": dp.file_path, "result": result}
             results.append(temp)
         return results
