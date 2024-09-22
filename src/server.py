@@ -1,6 +1,7 @@
 from flask_ml.flask_ml_server import MLServer
 from flask_ml.flask_ml_server.constants import DataTypes
-from flask_ml.flask_ml_server.models import FileInput, ImageResult, ResponseModel
+from flask_ml.flask_ml_server.models import (FileInput, ImageResult,
+                                             ResponseModel)
 
 from text2audio import Text2AudioModel
 
