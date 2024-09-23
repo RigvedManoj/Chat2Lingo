@@ -9,7 +9,6 @@ This application is used to convert conversation logs into audio with distinct v
     - `pyttsx3`
     - `pydub`
     - `flask_ml`
-- **FFmpeg**: This project also requires FFmpeg for audio processing. You can install it by following the instructions found [here](https://www.geeksforgeeks.org/how-to-install-ffmpeg-on-windows/).
 
 ## Setup Instructions
 
@@ -43,7 +42,12 @@ This application is used to convert conversation logs into audio with distinct v
    pip install -r requirements.txt
    ```
 
-5. **Run the Project**:
+5. **Download FFMPEG**:
+
+   This project also requires FFmpeg for audio processing. 
+   You can install it by following the instructions found [here](https://www.geeksforgeeks.org/how-to-install-ffmpeg-on-windows/).
+   
+6. **Run the Project**:
 
     Execute the provided shell script to start the server and run the client.
 
@@ -51,6 +55,14 @@ This application is used to convert conversation logs into audio with distinct v
    ```bash
    cd src
    ./runSample.sh
+   ```
+7. **Run Project with CLI**:
+   
+   The project can also be run via command line. 
+   Run the server.py file in a terminal and then run client.py with arguments in another terminal.
+   ```bash
+   python server.py &
+   python client.py "Inputs/text1.txt" "Inputs/text2.txt"
    ```
 
 ## Additional Setup (Optional):
