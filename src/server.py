@@ -21,3 +21,6 @@ def audio_transfer(inputs: list[FileInput], parameters: dict):
     ]
     response = ResponseModel(results=image_results)
     return response.get_response()
+
+
+server.run()
