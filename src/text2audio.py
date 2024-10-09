@@ -55,7 +55,9 @@ class Text2AudioModel:
         os.makedirs("../Outputs", exist_ok=True)
         print(str(os.path.splitext(os.path.basename(file_path))[0]))
         output_file_path = (
-            "../Outputs/" + str(os.path.splitext(os.path.basename(file_path))[0]) + ".mp3"
+            "../Outputs/"
+            + str(os.path.splitext(os.path.basename(file_path))[0])
+            + ".mp3"
         )
 
         # Export the combined sound to MP3
